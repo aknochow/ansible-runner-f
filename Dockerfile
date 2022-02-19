@@ -2,14 +2,15 @@
 FROM quay.io/fedora/fedora:35
 
 # Packages
-RUN dnf install -y --setopt=tsflags=nodocs jq nano openssl rsync unzip wget
+RUN dnf install -y --setopt=tsflags=nodocs dumb-init rsync
+
+# python3 alias to make things work
+RUN if [ -f /usr/bin/python3 ] && [ ! -f /usr/bin/python ]; then ln --symbolic /usr/bin/python3 /usr/bin/python; fi
 
 # Ansible runner
 #
 # In OpenShift, container will run as a random uid number and gid 0. Make sure things
 # are writeable by the root group.
-RUN if [ -f /usr/bin/python3 ] && [ ! -f /usr/bin/python ]; then ln --symbolic /usr/bin/python3 /usr/bin/python; fi
-
 RUN dnf install -y --setopt=tsflags=nodocs python-ansible-runner 
 RUN for dir in \
       /home/runner \
@@ -30,4 +31,9 @@ RUN for dir in \
 
 WORKDIR /runner
 ENV HOME=/home/runner
+
+ADD entrypoint.sh /bin/entrypoint
+RUN chmod +x /bin/entrypoint
+ENTRYPOINT ["entrypoint"]
+
 CMD ["ansible-runner", "run", "/runner"]
