@@ -2,7 +2,7 @@
 FROM quay.io/fedora/fedora:35
 
 # Packages
-RUN dnf install -y --setopt=tsflags=nodocs jq nano openssl python-ansible-runner unzip wget
+RUN dnf install -y --setopt=tsflags=nodocs jq nano openssl python-ansible-runner rsync unzip wget
 
 # Ansible runner
 CMD ["ansible-runner", "run", "/runner"]
