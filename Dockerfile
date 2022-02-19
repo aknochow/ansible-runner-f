@@ -1,14 +1,11 @@
 # Use Fedora for our base because it is pretty awesome... (and has python-ansible-runner built in).
 FROM quay.io/fedora/fedora:35
 
-
-# Python Dependencies
+# Python 
 RUN if [ -f /usr/bin/python3 ] && [ ! -f /usr/bin/python ]; then ln --symbolic /usr/bin/python3 /usr/bin/python; fi
-RUN dnf install -y --setopt=tsflags=nodocs python-devel python3-lxml pip
-RUN pip install --no-cache-dir certifi
 
 # Packages
-RUN dnf install -y --setopt=tsflags=nodocs dumb-init git openssh-clients rsync
+RUN dnf install -y --setopt=tsflags=nodocs dumb-init rsync
 
 # Ansible runner
 #
