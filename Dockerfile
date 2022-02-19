@@ -8,6 +8,8 @@ RUN dnf install -y --setopt=tsflags=nodocs jq nano openssl rsync unzip wget
 #
 # In OpenShift, container will run as a random uid number and gid 0. Make sure things
 # are writeable by the root group.
+RUN if [ -f /usr/bin/python3 ] && [ ! -f /usr/bin/python ]; then ln --symbolic /usr/bin/python3 /usr/bin/python; fi
+
 RUN dnf install -y --setopt=tsflags=nodocs python-ansible-runner 
 RUN for dir in \
       /home/runner \
