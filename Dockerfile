@@ -1,11 +1,8 @@
-# Use Fedora for our base because it is pretty awesome... (and has python-ansible-runner built in).
-FROM quay.io/fedora/fedora:35
-
-# Python 
-RUN if [ -f /usr/bin/python3 ] && [ ! -f /usr/bin/python ]; then ln --symbolic /usr/bin/python3 /usr/bin/python; fi
+# Use Fedora for our base because it is awesome... (and has python-ansible-runner baked in).
+FROM quay.io/fedora/fedora:37
 
 # Packages
-RUN dnf install -y --setopt=tsflags=nodocs dumb-init rsync
+RUN dnf install -y --setopt=tsflags=nodocs dumb-init rsync jq ansible-core
 
 # Ansible runner
 #
